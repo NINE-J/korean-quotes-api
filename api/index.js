@@ -1,14 +1,19 @@
 const quotes = require("../_data/quotes.json");
 
 module.exports = (req, res) => {
-  // CORS 설정
+  // CORS 기본 헤더 설정
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // ★ Preflight 요청 명시적 처리
+  if (req.method === "OPTIONS") {
+    return res.writeHead(204).end();
+  }
 
   if (req.method === "GET") {
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-
-    // Vercel 공식 방식: writeHead + end (status() 사용 X)
+    
     res.writeHead(200, {
       "Content-Type": "application/json",
       "Cache-Control": "no-cache, no-store, must-revalidate"
