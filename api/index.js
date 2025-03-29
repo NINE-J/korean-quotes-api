@@ -11,6 +11,7 @@ module.exports = (req, res) => {
     // Vercel 공식 방식: writeHead + end (status() 사용 X)
     res.writeHead(200, {
       "Content-Type": "application/json",
+      "Cache-Control": "no-cache, no-store, must-revalidate"
     });
     res.end(JSON.stringify(randomQuote));
   } else {
